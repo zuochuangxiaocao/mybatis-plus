@@ -1,5 +1,4 @@
-/*
-package com.sxx.mybatisplus.config;
+package com.sxx.mybatisplus.conusmer;
 
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
@@ -14,10 +13,13 @@ import javax.annotation.PreDestroy;
 import java.util.List;
 
 @Component
-public class MqConsumer {
+public class conusmer1 {
 
     private DefaultMQPushConsumer consumer = null;
 
+    /**
+     * 消费普通消息
+     */
     @PostConstruct
     public void initMQConsumer() {
         consumer = new DefaultMQPushConsumer("defaultGroup");
@@ -50,4 +52,3 @@ public class MqConsumer {
         }
     }
 }
-*/
