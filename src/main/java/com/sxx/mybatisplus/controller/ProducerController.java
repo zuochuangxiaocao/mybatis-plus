@@ -36,12 +36,18 @@ public class ProducerController {
         producer.setNamesrvAddr("localhost:9876");
         // 启动Producer实例
         producer.start();
+
         for (int i = 0; i < 10; i++) {
             // 创建消息，并指定Topic，Tag和消息体
             Message msg = new Message("sz-sxx" /* Topic */,
                     "TagA" /* Tag */,
                     ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
             );
+            // 这里设置需要延时的等级即可,RcoketMQ的延时等级为：
+            // 1s，5s，10s，30s，1m，2m，3m，4m，5m，6m，7m，8m，9m，10m，20m，30m，1h，2h。
+            // level=0，表示不延时。level=1，表示 1 级延时，对应延时 1s。level=2 表示 2 级延时，对应5s，以此类推。
+            msg.setDelayTimeLevel(3);
+
             // 发送消息到一个Broker
             SendResult sendResult = producer.send(msg);
             // 通过sendResult返回消息是否成功送达

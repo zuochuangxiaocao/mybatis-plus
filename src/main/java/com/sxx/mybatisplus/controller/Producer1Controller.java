@@ -42,7 +42,7 @@ public class Producer1Controller {
             // 创建消息，并指定Topic，Tag和消息体
             Message msg = new Message("OrderTopic1" /* Topic */,
                     "TagH" /* Tag */,
-                    ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
+                    ("Hello RocketMQ H " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
             );
             // 发送消息到一个Broker
             SendResult sendResult = producer.send(msg, new MessageQueueSelector() {
@@ -51,11 +51,35 @@ public class Producer1Controller {
                     //此刻arg == orderId,可以保证是每个订单进入同一个队列
                     Integer id = (Integer) o;
                     int index = id % list.size();
+                    System.out.println(index);
                     return list.get(index);
                 }
             },1);
 
         }
+
+
+        for (int i = 0; i < 10; i++) {
+            // 创建消息，并指定Topic，Tag和消息体
+            Message msg = new Message("OrderTopic1" /* Topic */,
+                    "TagJ" /* Tag */,
+                    ("Hello RocketMQ J " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
+            );
+            // 发送消息到一个Broker
+            SendResult sendResult = producer.send(msg, new MessageQueueSelector() {
+                @Override
+                public MessageQueue select(List<MessageQueue> list, Message message, Object o) {
+                    //此刻arg == orderId,可以保证是每个订单进入同一个队列
+                    Integer id = (Integer) o;
+                    int index = id % list.size();
+                    System.out.println(index);
+                    return list.get(index);
+                }
+            },2);
+
+        }
+
+
         // 如果不再发送消息，关闭Producer实例。
         producer.shutdown();
     }
